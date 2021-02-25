@@ -41,11 +41,11 @@ vect_param = [{
     }]
 
 for alpha,beta in [(x,y) for x in [0.5,0.05,0.005,0.0005,0] for y in [0.1, 0.01, 0.001, 0.0001, 0]]:
-    l1,l2=[],[]
+    l1,l2=[alpha],[beta]
     
     models_param_grid = {
-            'pbg':{ 'pbg__alpha': l1.append(alpha),
-            'pbg__beta':l2.append(beta),
+            'pbg':{ 'pbg__alpha': l1,
+            'pbg__beta':l2,
             'pbg__local_max_itr':[1,2,5,10,50],
             'pbg__global_max_itr':[1,2,5,10,50],
             'pbg__local_threshold':[1e-6],
