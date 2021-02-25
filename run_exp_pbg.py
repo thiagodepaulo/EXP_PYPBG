@@ -63,7 +63,7 @@ for alpha,beta in [(x,y) for x in [0.5,0.05,0.005,0.0005,0] for y in [0.1, 0.01,
         params[key] = [{**map, **models_param_grid[key]} for map in vect_param]
 
 
-    estimator = EstimatorSelectionHelper(steps,params) 
+    estimator = EstimatorSelectionHelper(steps,params)
     estimator.fit(M,y, n_jobs=-1)
     df = estimator.score_summary()
     df.to_csv(f'teste_pbg_{alpha}_{beta}.csv')
