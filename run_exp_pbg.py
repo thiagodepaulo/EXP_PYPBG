@@ -24,6 +24,8 @@ from util import load_dataset, text_preproc
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import FunctionTransformer
+from upbg import UPBG
+
 
 ## load dataset
 (M, y, y_names) = load_dataset('20ng')
@@ -45,10 +47,10 @@ models_param_grid = {
             'pbg__global_max_itr':[1,2,5,10,50],
             'pbg__local_threshold':[1e-6],
             'pbg__global_threshold':[1e-6],
-            'pbg__K':[50,100,200,500]}
+            'pbg__n_components':[50,100,200,500]}
 }   
 models = {
-            'pbg':MultinomialNB()            
+            'pbg':UPBG(100)            
         } 
 
 params = {}

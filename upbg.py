@@ -24,6 +24,7 @@ class UPBG(BaseEstimator, ClassifierMixin):
         self.map_class_ = {-1: -1}  # key=class, value=index position
         self.free_id = set(range(n_components))  # list of index position
         self.map_word_class = {}  # dict of list of class, key=word_id, value=list of classes
+        self.save_interval = save_interval
 
     def local_propag(self, j):
         local_niter = 0
