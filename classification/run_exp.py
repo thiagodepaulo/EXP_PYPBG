@@ -59,14 +59,14 @@ models = {
             'cnb':ComplementNB()
         } 
 
-params = {}
-steps = {}
 for key in models:
+    print(key)
+    params = {}
+    steps = {}
     steps[key] = Pipeline(pre_steps + [(key,models[key])])
     params[key] = [{**map, **models_param_grid[key]} for map in vect_param]
-
-
-estimator = EstimatorSelectionHelper(steps,params)
-estimator.fit(M,y, n_jobs=-1)
-df = estimator.score_summary()
-df.to_csv('teste3.csv')
+    estimator = EstimatorSelectionHelper(steps,params)
+    estimator.fit(M,y, n_jobs=-1)
+    df = estimator.score_summary()
+    df.to_csv(f'teste3_{key}.csv')
+    print(f'done {key}')
