@@ -40,30 +40,31 @@ vect_param = [{
     'vect':[CountVectorizer()]
     }]
 
-for alpha,beta in [(x,y) for x in [0.5,0.05,0.005,0.0005,0] for y in [0.1, 0.01, 0.001, 0.0001, 0]]:
-    l1,l2=[alpha],[beta]
-    print(l1,l2)
-    models_param_grid = {
-            'pbg':{ 'pbg__alpha': l1,
-            'pbg__beta':l2,
-            'pbg__local_max_itr':[1,2,5,10,50],
-            'pbg__global_max_itr':[1,2,5,10,50],
-            'pbg__local_threshold':[1e-6],
-            'pbg__global_threshold':[1e-6],
-            'pbg__n_components':[50,100,200,500]}
-    }   
-    models = {
-            'pbg':UPBG(100)            
-        } 
+for alpha,beta in [(x,y) for x in [0.05, 0.005, 0.0005, 0] for y in [0.01, 0.001, 0.0001, 0]]:
+    for lmitr in [5,10,50]:
+        for gmitr in [5,10,50]:            
+            print(alpha,beta,lmitr, gmitr)
+            models_param_grid = {
+                    'pbg':{ 'pbg__alpha': [alpha],
+                    'pbg__beta':[beta],
+                    'pbg__local_max_itr': [lmitr],
+                    'pbg__global_max_itr':[gmitr],
+                    'pbg__local_threshold':[1e-6],
+                    'pbg__global_threshold':[1e-6],
+                    'pbg__n_components':[50,100,500]}
+            }   
+            models = {
+                    'pbg':UPBG(100)            
+            } 
 
-    params = {}
-    steps = {}
-    for key in models:
-        steps[key] = Pipeline(pre_steps + [(key,models[key])])
-        params[key] = [{**map, **models_param_grid[key]} for map in vect_param]
+            params = {}
+            steps = {}
+            for key in models:
+                steps[key] = Pipeline(pre_steps + [(key,models[key])])
+                params[key] = [{**map, **models_param_grid[key]} for map in vect_param]
 
 
-    estimator = EstimatorSelectionHelper(steps,params)
-    estimator.fit(M,y, n_jobs=-1)
-    df = estimator.score_summary()
-    df.to_csv(f'teste_pbg_{alpha}_{beta}.csv', mode='a', header=False)
+            estimator = EstimatorSelectionHelper(steps,params)
+            estimator.fit(M,y, n_jobs=-1)
+            df = estimator.score_summary()
+            df.to_csv(f'teste_pbg_{alpha}_{beta}_{lmitr}_{gmitr}.csv', mode='a', header=False)
