@@ -103,6 +103,7 @@ class UPBG(BaseEstimator, ClassifierMixin):
         if not self.is_fitted_:
             self._init_matrices()
             # create map of
+            y = np.concatenate(y)
             for cls_id in np.unique(y):
                 self.map_class_.setdefault(cls_id, self.free_id.pop())
         self.bgp()
