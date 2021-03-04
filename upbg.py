@@ -95,16 +95,16 @@ class UPBG(BaseEstimator, ClassifierMixin):
         X, y = check_X_y(X, y, accept_sparse=True)
         self.unlabeled = (y == -1)
         self.hasitr = hasattr(y[0], '__iter__') # has iterator for multilabel
-        self.n_class = len(np.unique(y))
+        y_flat = np.concatenate(y)
+        self.n_class = len(np.unique(y_flat))
         self.X = X
         self.y = y
         self.Xc = X.tocsc()
         self.ndocs, self.nwords = X.shape
         if not self.is_fitted_:
             self._init_matrices()
-            # create map of
-            y = np.concatenate(y)
-            for cls_id in np.unique(y):
+            # create map of            
+            for cls_id in np.unique(y_flat):
                 self.map_class_.setdefault(cls_id, self.free_id.pop())
         self.bgp()
         self.components_ = np.exp(self.log_B.T)
