@@ -99,7 +99,7 @@ class UPBG(BaseEstimator, ClassifierMixin):
         self.n_class = len(np.unique(y_flat))
         self.X = X
         self.y = y
-        self.Xc = X.tocsc()
+        self.Xc = X.tocsc() 
         self.ndocs, self.nwords = X.shape
         if not self.is_fitted_:
             self._init_matrices()
