@@ -95,7 +95,7 @@ class UPBG(BaseEstimator, ClassifierMixin):
         X, y = check_X_y(X, y, accept_sparse=True)
         self.unlabeled = (y == -1)
         self.hasitr = hasattr(y[0], '__iter__') # has iterator for multilabel
-        y_flat = np.concatenate(y)
+        y_flat = np.concatenate(y) if self.hasitr else y
         self.n_class = len(np.unique(y_flat))
         self.X = X
         self.y = y
