@@ -16,6 +16,7 @@ import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import RegexpTokenizer
 from sklearn.datasets import fetch_20newsgroups
+from sklearn.model_selection import train_test_split
 import pandas as pd
  
 
@@ -263,13 +264,24 @@ class SimplePreprocessing():
 
 
 
-def load_dataset(dataset_name='20ng'):
+def load_dataset(dataset_name='20ng', subset=False):
     if dataset_name == '20ng':
-        return load_20ng()
+        return load_20ng(subset=subset)
     elif dataset_name == 'agnews':
         return load_agnews()
     else:
+        return load_from_path(dataset_name, subset=subset)        
+
+def load_from_path(path, subset=False):
+    loader = Loader()
+    dd = loader.from_files(path)
+    if subset:
+        X_train, X_test, y_train, y_test = train_test_split(dd['corpus'], dd['class_index'], 
+                    test_size=0.2, random_state=42)
+        return (X_train, X_test, y_train, y_test, dd['class_names'])
+    else:
         return None
+
 
 def load_agnews():
     ag_train = pd.read_csv('/exp/datasets/agnews/train.csv', header=None)
